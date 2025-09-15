@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlit Memories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            perspective: 1000px;
+        }
+
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #020111, #191654, #434343);
+            z-index: -1;
+        }
+
+        /* The Moon */
+        #stars-container::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background-color: #f5f3ce;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #f5f3ce, 0 0 90px #f5f3ce, 0 0 15px #ffffff inset;
+            animation: moon-glow 8s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        /* The Eclipse Shadow */
+        #stars-container::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background-color: #020111;
+            border-radius: 50%;
+            box-shadow: 0 0 25px 15px #020111;
+            z-index: 3;
+            animation: eclipse-reveal 8s ease-out forwards;
+        }
+        
+        @keyframes eclipse-reveal {
+            0% { transform: translate(0, 0); }
+            70%, 100% { transform: translate(-100px, 100px); }
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff;
+            animation: sparkle 5s infinite ease-in-out;
+        }
+
+        .shooting-heart, .shooting-star {
+            position: absolute;
+            user-select: none;
+        }
+        
+        .shooting-heart {
+            font-size: 30px;
+            color: #ff79ac;
+            text-shadow: 0 0 10px #ff79ac;
+            animation: shoot-across 5s linear infinite;
+            z-index: 12;
+        }
+        
+        .shooting-star {
+            height: 2px;
+            background: linear-gradient(-45deg, #ffffff, rgba(255, 255, 255, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px #ffffff);
+            animation: tail-shot 3s ease-in-out infinite;
+            z-index: 12;
+        }
+        
+        #special-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 1.2em;
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            padding: 20px 40px;
+            z-index: 20;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(2px);
+        }
+        
+        #background-photo-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 45vw;
+            max-width: 1200px;
+            max-height: 700px;
+            background-color: #333;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            opacity: 0.3;
+            z-index: 5;
+        }
+        
+        #background-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .photo-frame {
+            position: absolute;
+            box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            background-color: #fff;
+            z-index: 10;
+            transform-style: preserve-3d;
+            animation: float-3d 12s ease-in-out infinite;
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.15) rotateY(0deg) !important;
+            z-index: 15;
+            animation-play-state: paused;
+        }
+
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .frame-polaroid { border: 1px solid #ddd; padding: 15px 15px 70px 15px; }
+        .frame-vintage { padding: 20px; border: 15px solid #a07a56; }
+        .frame-modern { padding: 5px; border: 8px solid #ccc; }
+        .frame-circle { padding: 10px; border: 5px solid white; border-radius: 50%; }
+        .frame-circle img { border-radius: 50%; }
+        @keyframes moon-glow { from, to { box-shadow: 0 0 50px #f5f3ce, 0 0 90px #f5f3ce, 0 0 15px #ffffff inset; } 50% { box-shadow: 0 0 40px #f5f3ce, 0 0 100px #f5f3ce, 0 0 15px #ffffff inset; } }
+        @keyframes sparkle { from, to { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes shoot-across { from { transform: translateX(-100px) rotate(0deg); opacity: 1; } to { transform: translateX(120vw) rotate(720deg); opacity: 0; } }
+        @keyframes tail-shot { from { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } to { transform: translateX(300px) translateY(300px) rotate(-45deg); opacity: 0; } }
+        @keyframes float-3d { from { transform: translateY(0px) rotateX(var(--x-rot)) rotateY(var(--y-rot)); } 50% { transform: translateY(-20px) rotateX(calc(var(--x-rot) + 5deg)) rotateY(calc(var(--y-rot) - 5deg)); } to { transform: translateY(0px) rotateX(var(--x-rot)) rotateY(var(--y-rot)); } }
+    </style>
+</head>
+<body>
+    <div id="stars-container"></div>
+    <div id="content-container">
+        <div id="background-photo-frame"></div>
+        <div id="special-message"></div>
+        <div id="photo-gallery"></div>
+    </div>
+    
+    <audio id="background-song" loop></audio>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. PASTE YOUR CONTENT HERE ---
+
+            const songFilename = "happy-birthday.mp3"; // <-- PASTE YOUR SONG FILENAME HERE
+
+            const specialMessage = `HAPPY BIRTHDAY, GUDDIYA!!!<br><br>I hope your day is filled with as much happiness as you bring into my life. You're not just a friend; you're the person who knows my story, celebrates my triumphs, and helps me through the tough times. I'm so grateful for every memory we've made and every crazy adventure we've shared.&nbsp; May this new year of your life be a beautiful journey written in the ink of love and painted with the hues of endless joy....`;
+            
+            const backgroundImageUrl = "https://i.ibb.co/VYV2J6DW/Whats-App-Image-2025-09-15-at-14-20-37-d02028a7.jpg"; // <-- PASTE YOUR BACKGROUND IMAGE URL HERE
+            
+            const floatingImageUrls = [
+                "https://i.ibb.co/Sw9Lzdkv/photo7.jpg", // <-- PASTE 1st FLOATING IMAGE URL HERE
+                "https://i.ibb.co/27cYBb4Y/photo5.jpg", // <-- PASTE 2nd FLOATING IMAGE URL HERE
+                "https://i.ibb.co/sJXPqdDj/photo2.jpg", // <-- PASTE 3rd FLOATING IMAGE URL HERE
+                "https://i.ibb.co/R8BF1n4/Whats-App-Image-2025-09-15-at-14-20-39-66858241.jpg", // <-- PASTE 4th FLOATING IMAGE URL HERE
+                "https://i.ibb.co/39zYQKWh/Whats-App-Image-2025-09-15-at-14-20-38-55d96307.jpg", // <-- PASTE 5th FLOATING IMAGE URL HERE
+                "https://i.ibb.co/ZRD5xsMD/Whats-App-Image-2025-09-15-at-15-49-07-3b2719a4.jpg"  // <-- PASTE 6th FLOATING IMAGE URL HERE
+            ];
+
+            // --- 2. THE SCRIPT THAT BUILDS THE PAGE (No changes needed below) ---
+
+            const starsContainer = document.getElementById('stars-container');
+            const photoGallery = document.getElementById('photo-gallery');
+            const backgroundPhotoFrame = document.getElementById('background-photo-frame');
+            const messageElement = document.getElementById('special-message');
+            const songElement = document.getElementById('background-song');
+
+            messageElement.innerHTML = specialMessage;
+            songElement.src = songFilename;
+            
+            function playAudio() {
+                songElement.play().catch(error => console.log("Audio autoplay was blocked by the browser."));
+                document.body.removeEventListener('click', playAudio);
+            }
+            document.body.addEventListener('click', playAudio);
+            
+            if (backgroundImageUrl.startsWith("https://")) {
+                const bgImg = document.createElement('img');
+                bgImg.src = backgroundImageUrl;
+                backgroundPhotoFrame.appendChild(bgImg);
+            }
+
+            const numberOfStars = 200;
+            const numberOfHearts = 8;
+            const numberOfShootingStars = 8;
+            
+            for (let i = 0; i < numberOfStars; i++) { const star = document.createElement('div'); star.classList.add('star'); star.style.width = `${Math.random() * 2 + 1}px`; star.style.height = star.style.width; star.style.top = `${Math.random() * 100}%`; star.style.left = `${Math.random() * 100}%`; star.style.animationDelay = `${Math.random() * 5}s`; starsContainer.appendChild(star); }
+            const hearts = ['❤️', '💖', '💕', '💓', '💗']; for (let i = 0; i < numberOfHearts; i++) { const heart = document.createElement('div'); heart.classList.add('shooting-heart'); heart.innerHTML = hearts[i % hearts.length]; heart.style.top = `${Math.random() * 100}%`; const duration = Math.random() * 3 + 4; const delay = Math.random() * 5; heart.style.animationDuration = `${duration}s`; heart.style.animationDelay = `${delay}s`; document.body.appendChild(heart); }
+            for (let i = 0; i < numberOfShootingStars; i++) { const shootingStar = document.createElement('div'); shootingStar.classList.add('shooting-star'); shootingStar.style.top = `${Math.random() * 100}%`; shootingStar.style.left = `${Math.random() * 100}%`; shootingStar.style.animationDelay = `${Math.random() * 10}s`; shootingStar.style.animationDuration = `${Math.random() * 2 + 1}s`; starsContainer.appendChild(shootingStar); }
+
+            const frameStyles = ['frame-polaroid', 'frame-vintage', 'frame-modern', 'frame-circle', 'frame-polaroid', 'frame-vintage'];
+            
+            // --- FIXED POSITIONS TO AVOID OBSTRUCTION ---
+            const gridPositions = [ 
+                { top: '10%', left: '5%' },   // Top-left
+                { top: '65%', left: '10%' },  // Bottom-left
+                { top: '40%', left: '15%' },  // Mid-left
+                { top: '15%', left: '40%' },  // Top-center-ish
+                { top: '60%', left: '75%' },  // Bottom-right
+                { top: '30%', left: '70%' }   // Mid-right (below the moon)
+            ];
+
+            for (let i = 0; i < floatingImageUrls.length; i++) {
+                const frame = document.createElement('div');
+                frame.classList.add('photo-frame', frameStyles[i % frameStyles.length]);
+                const size = Math.random() * 50 + 150;
+                frame.style.width = `${size}px`;
+                frame.style.height = `${size}px`;
+                const position = gridPositions[i];
+                frame.style.top = position.top;
+                frame.style.left = position.left;
+                const xRot = Math.random() * 20 - 10;
+                const yRot = Math.random() * 40 - 20;
+                frame.style.setProperty('--x-rot', `${xRot}deg`);
+                frame.style.setProperty('--y-rot', `${yRot}deg`);
+                frame.style.animationDelay = `${Math.random() * 4}s`;
+
+                if (floatingImageUrls[i] && floatingImageUrls[i].startsWith("https://")) {
+                    const img = document.createElement('img');
+                    img.src = floatingImageUrls[i];
+                    frame.appendChild(img);
+                }
+                
+                photoGallery.appendChild(frame);
+            }
+        });
+    </script>
+</body>
+</html>
